@@ -43,16 +43,15 @@ public class GameManager : MonoBehaviour {
         donkey = GameObject.Find("Donkey");
         diddy = GameObject.Find("Diddy");
 
-        if (DonkeyPos != 0) donkey.transform.localPosition = cartPositions[_donkeyPos - 1];
-        if (DiddyPos != 0) diddy.transform.localPosition = cartPositions[_diddyPos - 1];
+        PositionMonkeys();
 
 
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public void PositionMonkeys()
     {
-
+        if (DonkeyPos != 0) donkey.transform.localPosition = cartPositions[_donkeyPos - 1];
+        if (DiddyPos != 0) diddy.transform.localPosition = cartPositions[_diddyPos - 1];
     }
 
     public void EndGame()
