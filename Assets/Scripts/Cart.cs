@@ -84,7 +84,7 @@ public class Cart : MonoBehaviour {
             //float extraSpeed = 1;
             //if (grounded && transform.rotation.z >= 0.2) extraSpeed = 0.8f;
             if (grounded && transform.rotation.z <= -0.2) rb.AddForce(new Vector2(100, rb.velocity.y - weight));
-            rb.velocity = new Vector2(speed * Time.deltaTime, rb.velocity.y - weight);
+            if (rb.bodyType == RigidbodyType2D.Dynamic) rb.velocity = new Vector2(speed * Time.deltaTime, rb.velocity.y - weight);
             
 
             //Para que atraviese plataformas
@@ -95,12 +95,6 @@ public class Cart : MonoBehaviour {
 
 
     void Update() {
-        
-        // To avoid weird angle hurting jumps
-        if (donkey.GetComponentInChildren<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Hurt"))
-        {
-            donkey.transform.localRotation = new Quaternion(0,0,0,0);
-        }
 
         if (canMove)
         {
@@ -186,24 +180,20 @@ public class Cart : MonoBehaviour {
                 rb.AddForce(new Vector2(0f, jumpForce * 1.5f));
                 killingCooldown = true;
                 Invoke("ResetKillingCooldown", 1f);
-                collision.GetComponentInParent<EnemyCart>().KillPassenger();
-                //anim.SetTrigger("Jump");
-                //isJumping = true;
-
-                /*
-                ContactPoint2D[] contacts = new ContactPoint2D[10];
-                collision.GetContacts(contacts);
-                foreach (var item in contacts)
-                {
-                    Debug.Log(item.otherCollider);
-                }
-                */
+                if (collision.GetComponentInParent<EnemyCart>())
+                    collision.GetComponentInParent<EnemyCart>().KillPassenger();
+                else
+                    collision.GetComponent<Baddie>().Death();
             }
             
-
         }
 
-
+        if (collision.tag == "Enemy" && grounded)
+        {
+            collision.gameObject.layer = 10;
+            Hurt(collision.gameObject);
+        }
+        
     }
 
 
@@ -290,7 +280,9 @@ public class Cart : MonoBehaviour {
             donkey.gameObject.SetActive(false);
 
             // Get things back to normal
-            _enemy.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            if (_enemy.GetType() == typeof(EnemyCart))
+                _enemy.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+
             rb.bodyType = RigidbodyType2D.Dynamic;
 
         } else if(GameManager.gm.DonkeyPos == 2 || GameManager.gm.DonkeyPos == 0)

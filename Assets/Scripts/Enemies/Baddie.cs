@@ -10,11 +10,16 @@ public class Baddie : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Cart")
         {
-            gameObject.layer = 10;
+            //gameObject.layer = 10;
             //GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-            collision.gameObject.GetComponent<Cart>().Hurt(gameObject);
+            //collision.gameObject.GetComponent<Cart>().Hurt(gameObject);
 
         }
 
+    }
+
+    public void Death()
+    {
+        Debug.Log("Morí");
     }
 }

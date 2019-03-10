@@ -57,7 +57,8 @@ public class EnemyCart : MonoBehaviour
         if (canMove)
         {
 
-            rb.velocity = new Vector2(speed * Time.deltaTime * transform.localScale.x, rb.velocity.y - weight);
+            if(rb.bodyType == RigidbodyType2D.Dynamic)
+                rb.velocity = new Vector2(speed * Time.deltaTime * transform.localScale.x, rb.velocity.y - weight);
 
             if (transform.rotation.z > 0.4)
             {
@@ -145,10 +146,9 @@ public class EnemyCart : MonoBehaviour
     {
         if (collision.gameObject.tag == "Cart")
         {
-            Debug.Log("Auvh");
             gameObject.layer = 10;
             GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-            collision.gameObject.GetComponent<Cart>().Hurt(gameObject);
+            //collision.gameObject.GetComponent<Cart>().Hurt(gameObject);
             
         }
         
