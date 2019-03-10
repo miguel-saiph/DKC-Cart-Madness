@@ -99,7 +99,7 @@ public class Cart : MonoBehaviour {
         // To avoid weird angle hurting jumps
         if (donkey.GetComponentInChildren<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Hurt"))
         {
-            donkey.transform.rotation = new Quaternion(0,0,0,0);
+            donkey.transform.localRotation = new Quaternion(0,0,0,0);
         }
 
         if (canMove)
@@ -251,14 +251,26 @@ public class Cart : MonoBehaviour {
         rb.bodyType = RigidbodyType2D.Static;
         _enemy = enemy;
 
-        if (GameManager.gm.DonkeyPos == 1) donkey.GetComponentInChildren<Animator>().SetTrigger("Hurt");
+        if (GameManager.gm.DonkeyPos == 1)
+        {
+            donkey.transform.parent = null;
+            donkey.transform.rotation = new Quaternion(0, 0, 0, 0);
+            donkey.GetComponentInChildren<Animator>().SetTrigger("Hurt");
+            donkey.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            donkey.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 200f));
+        }
+            
         else
         {
-            diddy.transform.GetChild(0).GetComponent<Animator>().applyRootMotion = false;
-            diddy.transform.GetChild(0).GetComponent<Animator>().SetTrigger("Hurt");
+            diddy.transform.parent = null;
+            diddy.transform.rotation = new Quaternion(0, 0, 0, 0);
+            diddy.GetComponentInChildren<Animator>().SetTrigger("Hurt");
+            diddy.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            diddy.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 200f));
         }
 
-        
+        Invoke("EndHurt", 1.2f);
+
     }
 
     // Called from player's death animation
@@ -269,10 +281,13 @@ public class Cart : MonoBehaviour {
         {
             // Diddy takes donkey's place
             donkey.GetComponentInChildren<SpriteRenderer>().enabled = false;
-            diddy.transform.position = donkey.transform.position;
-
+            
             GameManager.gm.DiddyPos = 1;
             GameManager.gm.DonkeyPos = 0;
+
+            GameManager.gm.PositionMonkeys();
+
+            donkey.gameObject.SetActive(false);
 
             // Get things back to normal
             _enemy.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
@@ -280,11 +295,10 @@ public class Cart : MonoBehaviour {
 
         } else if(GameManager.gm.DonkeyPos == 2 || GameManager.gm.DonkeyPos == 0)
         {
-            //diddy.transform.GetChild(0).GetComponent<Animator>().applyRootMotion = true;
+            // Diddy dies, everything dies
             GameManager.gm.DiddyPos = 0;
             diddy.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
             GameManager.gm.EndGame();
-            Debug.Log("Murió x_x");
         }
         
     }
