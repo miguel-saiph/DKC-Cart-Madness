@@ -5,6 +5,7 @@ using UnityEngine;
 public class Baddie : MonoBehaviour {
 
     [SerializeField] private bool invulnerable = false;
+    [SerializeField] private AudioClip deathSound;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -20,6 +21,15 @@ public class Baddie : MonoBehaviour {
 
     public void Death()
     {
-        Debug.Log("Morí");
+        gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 150));
+        gameObject.GetComponent<Animator>().SetTrigger("Hurt");
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(deathSound);
+        Invoke("AutoDestroy", 2f);
+    }
+
+    private void AutoDestroy()
+    {
+        Destroy(gameObject);
     }
 }

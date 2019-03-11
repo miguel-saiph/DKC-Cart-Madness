@@ -516,6 +516,7 @@ MonoBehaviour:
   jumpForce: 500
   weight: 0.05
   canMove: 1
+  hitSound: {fileID: 8300000, guid: c9f1ac8e598f0714ba8b182681ececbe, type: 3}
   groundRadius: 0.2
   whatIsGround:
     serializedVersion: 2

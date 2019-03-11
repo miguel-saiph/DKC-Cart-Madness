@@ -19,6 +19,8 @@ public class Cart : MonoBehaviour {
     private GameObject diddy;
     private GameObject _enemy;
     private AudioSource audio;
+    [SerializeField] private AudioClip donkeyHit;
+    [SerializeField] private AudioClip diddyHit;
 
     //Physics
     private Transform groundCheck;    // A position marking where to check if the player is grounded.
@@ -193,7 +195,13 @@ public class Cart : MonoBehaviour {
             collision.gameObject.layer = 10;
             Hurt(collision.gameObject);
         }
-        
+
+        if (collision.tag == "Bad")
+        {
+            collision.gameObject.layer = 10;
+            Hurt(collision.gameObject);
+        }
+
     }
 
 
@@ -243,6 +251,7 @@ public class Cart : MonoBehaviour {
 
         if (GameManager.gm.DonkeyPos == 1)
         {
+            audio.PlayOneShot(donkeyHit);
             donkey.transform.parent = null;
             donkey.transform.rotation = new Quaternion(0, 0, 0, 0);
             donkey.GetComponentInChildren<Animator>().SetTrigger("Hurt");
@@ -252,6 +261,7 @@ public class Cart : MonoBehaviour {
             
         else
         {
+            audio.PlayOneShot(diddyHit);
             diddy.transform.parent = null;
             diddy.transform.rotation = new Quaternion(0, 0, 0, 0);
             diddy.GetComponentInChildren<Animator>().SetTrigger("Hurt");

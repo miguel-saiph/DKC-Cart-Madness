@@ -18,6 +18,7 @@ public class EnemyCart : MonoBehaviour
     private ParticleSystem particles;
     private GameObject enemy;
     private AudioSource audio;
+    [SerializeField] private AudioClip hitSound;
 
     //Physics
     private Transform groundCheck;    // A position marking where to check if the player is grounded.
@@ -38,7 +39,7 @@ public class EnemyCart : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         particles = GameObject.Find("Particles").GetComponent<ParticleSystem>();
-        enemy = GameObject.Find("Kremlin");
+        enemy = transform.Find("Kremlin").gameObject;
         audio = GetComponent<AudioSource>();
         groundCheck = transform.Find("GroundCheck");
 
@@ -123,7 +124,6 @@ public class EnemyCart : MonoBehaviour
                     StartCoroutine(Landing(0.15f));
                     isLanding = false;
                     isJumping = false;
-                    audio.Play();
                 }
 
             }
@@ -195,6 +195,7 @@ public class EnemyCart : MonoBehaviour
 
     public void KillPassenger()
     {
+        audio.PlayOneShot(hitSound);
         enemy.GetComponent<Animator>().SetTrigger("Hurt");
         collisionPosition = transform.position;
         enemy.transform.parent = null;

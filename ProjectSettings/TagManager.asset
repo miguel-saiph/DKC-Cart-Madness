@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Cart
   - Enemy
+  - Bad
   layers:
   - Default
   - TransparentFX

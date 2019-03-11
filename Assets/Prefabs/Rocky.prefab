@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114136277923111508}
   m_Layer: 0
   m_Name: Rocky
-  m_TagString: Untagged
+  m_TagString: Bad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89,6 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52bb23b5b7aaf314ab7b7a01efdc8448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invulnerable: 0
+  deathSound: {fileID: 0}
 --- !u!212 &212333262558352408
 SpriteRenderer:
   m_ObjectHideFlags: 1
