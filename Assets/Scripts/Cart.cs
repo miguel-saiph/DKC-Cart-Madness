@@ -48,8 +48,8 @@ public class Cart : MonoBehaviour {
         groundCheck = transform.Find("GroundCheck");
 
         //Initial actions
-        donkey.GetComponentInChildren<SpriteRenderer>().enabled = false;
-        diddy.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+        donkey.GetComponentInChildren<SpriteRenderer>().enabled = canMove;
+        diddy.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = canMove;
         particles.Stop();
         grounded = true;
 
